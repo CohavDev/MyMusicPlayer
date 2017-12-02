@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3d5afe</color>
+    <color name="colorPrimaryDark">#3949ab</color>
+    <color name="colorAccent">#ff5252</color>
+    <color name="listColorStart">#ff9500</color>
+    <color name="listColorCenter">#3b3a3a</color>
+    <color name="listColorEnd">#be6404</color>
+    <color name="mymusicStart">#141E30</color>
+    <color name="mymusicCenter">#141e30</color>
+    <color name="mymusicEnd">#243B55</color>
+    <color name="viewBg">#f1f5f8</color>
+    <color name="album_title">#4c4c4c</color>
+</resources>
