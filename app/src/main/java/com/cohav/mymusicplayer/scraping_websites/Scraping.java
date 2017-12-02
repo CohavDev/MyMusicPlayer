@@ -81,7 +81,8 @@ public class Scraping {
             }
         });
 
-        myWebView.loadUrl(dwnUrl);
+        myWebView.loadUrl(dwnUrl);//check if is loaded at first try
+
     }
     public ValueCallback myValueCallback = new ValueCallback<String>() {
         @Override

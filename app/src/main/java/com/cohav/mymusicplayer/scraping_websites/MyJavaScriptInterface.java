@@ -1,6 +1,7 @@
 package com.cohav.mymusicplayer.scraping_websites;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.webkit.JavascriptInterface;
 
 
@@ -28,27 +29,47 @@ public class MyJavaScriptInterface{
     public void getHrefLowSdk(String href){
         System.out.println("Href is = "+href);
         staticHref = href;
+        Runnable runnable;
+        final Handler handler = new Handler(Looper.getMainLooper());
         if(count <= 15){
             if(href ==null || href.length()<5){
                 //couldnt found href
-                Runnable runnable = new Runnable() {
+                runnable = new Runnable() {
                     @Override
                     public void run() {
                         sourceClass.loadJs();
+                        handler.removeCallbacks(this);
                     }
                 };
-                Handler handler = new Handler();
                 handler.postDelayed(runnable,1000);
 
             }
             else{
                 //href found
-                sourceClass.sendToFrag();
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        sourceClass.sendToFrag();
+                        handler.removeCallbacks(this);
+                    }
+                };
+                handler.post(runnable);
+
             }
         }
         else{
-            sourceClass.failedMsg();
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    sourceClass.failedMsg();
+                    handler.removeCallbacks(this);
+                }
+            };
+            handler.post(runnable);
+
         }
+
         count++;
     }
+
 }
