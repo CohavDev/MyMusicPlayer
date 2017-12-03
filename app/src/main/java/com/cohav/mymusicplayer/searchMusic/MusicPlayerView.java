@@ -1,5 +1,6 @@
 package com.cohav.mymusicplayer.searchMusic;
 
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -32,7 +33,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by shaulcohav on 14/07/17.
@@ -40,11 +44,11 @@ import java.util.List;
 
 public class MusicPlayerView extends Fragment {
     private View bottomSheet;
-    private TextView songName, authorName, length,timeCurrent;
+    private TextView songName, authorName, length,timeCurrent,title;
     private BottomSheetBehavior bottomSheetBehavior;
     private ImageButton play_Hide,pause_Hide, play_Extend,pause_Extend,skip_next,skip_prev;
     private ImageView thumbnail_hide,thumbnail_show;
-    private ConstraintLayout noSongPlaying;
+    private ConstraintLayout noSongPlaying, bgLayout;
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
     private Handler handler;
@@ -77,8 +81,10 @@ public class MusicPlayerView extends Fragment {
         //textViews
         songName =(TextView) view.findViewById(R.id.songName_hide);
         authorName = (TextView) view.findViewById(R.id.authorName_hide);
+        title = (TextView)view.findViewById(R.id.songTitleMPview);
         songName.setSelected(true);
         authorName.setSelected(true);
+        title.setSelected(true);
         length = (TextView) view.findViewById(R.id.time_end);
         timeCurrent = (TextView)view.findViewById(R.id.time_current);
         //image view
@@ -87,6 +93,8 @@ public class MusicPlayerView extends Fragment {
         //layout
         noSongPlaying = (ConstraintLayout)view.findViewById(R.id.noSongContainer);
         noSongPlaying.setVisibility(View.VISIBLE);
+        //bg Color
+        bgLayout = (ConstraintLayout)view.findViewById(R.id.music_bottomsheet);
         //onclick
         playBtnHide();
         //bottom sheet
@@ -314,12 +322,32 @@ public class MusicPlayerView extends Fragment {
         timeCurrent.setText(finalText);
     }
     public void setText(String name, String author,String duration, String thumbnailUrl){
+        randomBgColor();
         noSongPlaying.setVisibility(View.INVISIBLE);
         this.songName.setText(name);
         this.authorName.setText(author);
         this.length.setText(duration);
+        this.title.setText(name);
         Picasso.with(getContext()).load(thumbnailUrl).transform(new CircleTransform()).fit().into(thumbnail_show);
         Picasso.with(getContext()).load(thumbnailUrl).transform(new CircleTransform()).fit().into(thumbnail_hide);
+    }
+
+    public void randomBgColor(){
+        //selecting random colors for layout background
+        List<String> colors = new ArrayList();
+        colors.add("#082240");
+        colors.add("#AD1457");
+        colors.add("#212121");
+        colors.add("#00695C");
+        colors.add("#283593");
+        colors.add("#2A4857");
+        colors.add("#C62828");
+        colors.add("#1565C0");
+        colors.add("#4A148C");
+        colors.add("#F9A825");
+        Random rnd = new Random();
+        int rndNum = rnd.nextInt(10);
+        this.bgLayout.setBackgroundColor(Color.parseColor(colors.get(rndNum)));
     }
     public void setProgress(){
         if(mediaPlayer!=null ) {

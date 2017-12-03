@@ -31,6 +31,8 @@ import com.cohav.mymusicplayer.R;
 import com.cohav.mymusicplayer.searchMusic.MusicPlayerView;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
