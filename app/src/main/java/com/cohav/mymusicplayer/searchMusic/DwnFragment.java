@@ -1,7 +1,6 @@
 package com.cohav.mymusicplayer.searchMusic;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,18 +11,17 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.cohav.mymusicplayer.AlertDialogMsg;
+import com.cohav.mymusicplayer.Custom_Classes.AlertDialogMsg;
 import com.cohav.mymusicplayer.Custom_Classes.VideoItem;
 import com.cohav.mymusicplayer.MainActivity;
 import com.cohav.mymusicplayer.MyMusic.MyMusicActivity;
 import com.cohav.mymusicplayer.R;
 import com.cohav.mymusicplayer.scraping_websites.Scraping;
-import org.jaudiotagger.audio.AudioFile;
+
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
 

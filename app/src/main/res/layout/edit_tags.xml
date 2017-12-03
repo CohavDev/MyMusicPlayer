@@ -17,14 +17,14 @@
         android:background="#212121">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="180dp"
+            android:id="@+id/editTagTitlePage"
+            android:layout_width="300dp"
             android:layout_height="40dp"
             android:gravity="center"
             android:text="Edit Song Tags"
             android:textAlignment="center"
             android:textColor="#ffff"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

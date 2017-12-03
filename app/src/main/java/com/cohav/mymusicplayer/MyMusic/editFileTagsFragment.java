@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cohav.mymusicplayer.Custom_Classes.MusicFolder;
@@ -57,6 +58,7 @@ public class editFileTagsFragment extends AppCompatActivity {
     private MusicFolder myFolder;
     private TextInputEditText songNameEdit,authorNameEdit;
     private ImageView artImage;
+    private TextView title;
     private Button saveBtn,cancelBtn;
     private ImageButton selectArt;
     private File chosenArt;
@@ -79,10 +81,12 @@ public class editFileTagsFragment extends AppCompatActivity {
         }
         songNameEdit = (TextInputEditText) findViewById(R.id.editText_Title);
         authorNameEdit = (TextInputEditText) findViewById(R.id.editText_Author);
+        title = (TextView)findViewById(R.id.editTagTitlePage);
         artImage = (ImageView) findViewById(R.id.art_tag);
         selectArt = (ImageButton)findViewById(R.id.selectArt);
         cancelBtn = (Button)findViewById(R.id.cancel_Tags);
         saveBtn = (Button)findViewById(R.id.save_tags);
+        title.setText(myFolder.getFile().getName());
         songNameEdit.setText(myFolder.getSongName());
         authorNameEdit.setText(myFolder.getAuthorName());
         if(myFolder.getThumbnail()!=null){

@@ -1,20 +1,15 @@
 package com.cohav.mymusicplayer.scraping_websites;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.Fragment;
+
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.cohav.mymusicplayer.AlertDialogMsg;
-import com.cohav.mymusicplayer.MyMusic.MyMusicActivity;
+import com.cohav.mymusicplayer.Custom_Classes.AlertDialogMsg;
 import com.cohav.mymusicplayer.R;
 import com.cohav.mymusicplayer.searchMusic.DwnFragment;
 import com.cohav.mymusicplayer.searchMusic.MusicPlayerView;
@@ -46,15 +41,20 @@ public class Scraping {
     }
     public void createWebView(){
 
-        myWebView = new WebView(mContext);
+        myWebView = new WebView(activity.getApplicationContext());
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.getSettings().setDomStorageEnabled(true);
         myWebView.addJavascriptInterface(new MyJavaScriptInterface(this),"HTMLOUT");
         myWebView.setWebViewClient(new WebViewClient(){
             @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                AlertDialogMsg.showMsg(mContext,"Server failed",description);
+            }
+            @Override
             public void onPageFinished(final WebView view, String url){
                 super.onPageFinished(view,url);
                 //injecting values to the input
+                System.out.println("Page finished loading");
                 if(Build.VERSION.SDK_INT>=19) {
                     view.evaluateJavascript(js, new ValueCallback<String>() {
                         @Override
@@ -82,6 +82,8 @@ public class Scraping {
         });
 
         myWebView.loadUrl(dwnUrl);//check if is loaded at first try
+
+
 
     }
     public ValueCallback myValueCallback = new ValueCallback<String>() {

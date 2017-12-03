@@ -1,13 +1,11 @@
 package com.cohav.mymusicplayer.searchMusic;
 
-import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
@@ -16,11 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.cohav.mymusicplayer.AlertDialogMsg;
+import com.cohav.mymusicplayer.Custom_Classes.AlertDialogMsg;
 import com.cohav.mymusicplayer.Custom_Classes.CircleTransform;
 import com.cohav.mymusicplayer.Custom_Classes.VideoItem;
 import com.cohav.mymusicplayer.MainActivity;
@@ -30,13 +27,11 @@ import com.cohav.mymusicplayer.MyMusic.myMusicAdapter;
 import com.cohav.mymusicplayer.R;
 import com.cohav.mymusicplayer.scraping_websites.Scraping;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -279,7 +274,7 @@ public class MusicPlayerView extends Fragment {
                 songName.setText(folder.getSongName());
                 authorName.setText(folder.getAuthorName());
                 Picasso.with(getContext()).load(folder.getThumbnail()).fit().into(thumbnail_hide);
-                Picasso.with(getContext()).load(folder.getThumbnail()).fit().into(thumbnail_show);
+                Picasso.with(getContext()).load(folder.getThumbnail()).transform(new CircleTransform()).fit().into(thumbnail_show);
                 seekBar.setMax(mediaPlayer.getDuration());
                 runnable.run();
 
@@ -323,7 +318,7 @@ public class MusicPlayerView extends Fragment {
         this.songName.setText(name);
         this.authorName.setText(author);
         this.length.setText(duration);
-        Picasso.with(getContext()).load(thumbnailUrl).fit().into(thumbnail_show);
+        Picasso.with(getContext()).load(thumbnailUrl).transform(new CircleTransform()).fit().into(thumbnail_show);
         Picasso.with(getContext()).load(thumbnailUrl).transform(new CircleTransform()).fit().into(thumbnail_hide);
     }
     public void setProgress(){

@@ -1,4 +1,4 @@
-package com.cohav.mymusicplayer;
+package com.cohav.mymusicplayer.Custom_Classes;
 
 import android.app.AlertDialog;
 import android.content.Context;
