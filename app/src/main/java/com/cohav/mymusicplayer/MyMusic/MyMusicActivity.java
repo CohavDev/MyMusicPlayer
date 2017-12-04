@@ -45,21 +45,27 @@ public class MyMusicActivity extends Fragment {
         initialzieRecycler(view);
     }
     public void scanMusic(){
+        boolean createdVar = true;
         myList = new ArrayList<>();
         File musicDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
         if(!musicDirectory.exists()){
-           boolean createdVar =  musicDirectory.mkdir();
+            createdVar =  musicDirectory.mkdir();
            if(!createdVar){
                Toast.makeText(getContext(),"cannot find music directory",Toast.LENGTH_LONG).show();
            }
         }
-        this.lastModifiedDate = new Date(musicDirectory.lastModified());
-        File[]musicList = musicDirectory.listFiles();
-        MusicFolder.setContextMusicFolder(getContext());
-        for (int i=0;i<musicList.length;i++){
-            myList.add(new MusicFolder(musicList[i]));
+        if(createdVar) {
+            this.lastModifiedDate = new Date(musicDirectory.lastModified());
+            File[] musicList = musicDirectory.listFiles();
+            MusicFolder.setContextMusicFolder(getContext());
+            for (int i = 0; i < musicList.length; i++) {
+                myList.add(new MusicFolder(musicList[i]));
+            }
+            System.out.println("updated library");
         }
-        System.out.println("updated library");
+        else{
+            getActivity().finish();
+        }
     }
     public void initialzieRecycler(View view){
         mRecyclerView = (RecyclerView)view.findViewById(R.id.mList);
