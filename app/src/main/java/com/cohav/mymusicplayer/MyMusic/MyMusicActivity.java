@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.cohav.mymusicplayer.Custom_Classes.MusicFolder;
@@ -56,15 +57,32 @@ public class MyMusicActivity extends Fragment {
         }
         if(createdVar) {
             this.lastModifiedDate = new Date(musicDirectory.lastModified());
-            File[] musicList = musicDirectory.listFiles();
             MusicFolder.setContextMusicFolder(getContext());
-            for (int i = 0; i < musicList.length; i++) {
-                myList.add(new MusicFolder(musicList[i]));
-            }
+            scanFilesRecursively(musicDirectory);
             System.out.println("updated library");
         }
         else{
             getActivity().finish();
+        }
+    }
+    public void addFile(File file){
+        myList.add(new MusicFolder(file));
+    }
+    public void scanFilesRecursively(File root){
+        File[] list = root.listFiles();
+        for (File f:list){
+            if(f.isDirectory()){
+                scanFilesRecursively(f);
+            }
+            else{
+                String fileName = f.getName();
+                String fileNameArray[] = fileName.split("\\.");
+                String extension = fileNameArray[fileNameArray.length-1];
+                if(extension.equals("mp3")){
+                    addFile(f);
+                }
+
+            }
         }
     }
     public void initialzieRecycler(View view){
