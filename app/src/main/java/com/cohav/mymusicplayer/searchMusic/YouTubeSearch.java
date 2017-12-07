@@ -25,7 +25,7 @@ import java.util.List;
 
 public class YouTubeSearch {
     private static YouTube youtube;
-    private static String pop,rock;
+    public static String pop,rock;
     private static final String KEY = "AIzaSyBVCofD0lxiQzSBdeLscf3DmjY8eAL1p_4";
     private YouTube.Search.List query;
 
@@ -91,10 +91,9 @@ public class YouTubeSearch {
             item.setTitle(result.getSnippet().getTitle());
             item.setThumbnailURL(result.getSnippet().getThumbnails().getDefault().getUrl());
             item.setHighThumbnail(result.getSnippet().getThumbnails().getHigh().getUrl());
-            item.setId(result.getId());
-            item.setInfo(result.getSnippet().getChannelTitle());
+            item.setId(result.getContentDetails().getVideoId());
             items.add(item);
-        }
+        }   //next page token??
             return items;
 
     }
@@ -103,7 +102,7 @@ public class YouTubeSearch {
         try {
             query = youtube.playlistItems().list("snippet");
             query.setKey(KEY);
-            query.setFields(("items(id/videoId,snippet/title,snippet/thumbnails/default/url,snippet/thumbnails/high,snippet/channelTitle)"));
+            query.setFields(("items(contentDetails/videoId,snippet/title,snippet/thumbnails/default/url,snippet/thumbnails/high)"));
             query.setMaxResults((long)15);
             query.setPlaylistId(playList_Id);
             query.setPart("snippet,contentDetails");

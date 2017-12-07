@@ -28,6 +28,7 @@ import com.cohav.mymusicplayer.Custom_Classes.ViewPagerAdapter;
 import com.cohav.mymusicplayer.MyMusic.MyMusicActivity;
 import com.cohav.mymusicplayer.searchMusic.MusicPlayerView;
 import com.cohav.mymusicplayer.searchMusic.searchViewFragment;
+import com.cohav.mymusicplayer.searchMusic.searchPlayListFrag;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -200,6 +201,7 @@ public class MainActivity extends AppCompatActivity{
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MyMusicActivity(),"My Music");
         adapter.addFragment(new searchViewFragment(),"Search Music");
+        adapter.addFragment(new searchPlayListFrag(),"Search playList");
         viewPager.setAdapter(adapter);
     }
     public Fragment getActiveFrag(){
