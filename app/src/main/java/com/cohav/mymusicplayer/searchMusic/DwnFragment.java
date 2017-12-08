@@ -93,7 +93,7 @@ public class DwnFragment extends Fragment {
             }
             tag = f.getTagAndConvertOrCreateAndSetDefault();
             tag.setField(FieldKey.TITLE, title);
-            tag.setField(FieldKey.ARTIST, author);
+            tag.setField(FieldKey.ARTIST, author);//need to apply in another place
             tag.setField(FieldKey.ALBUM, title);
             Wrapper w = new Wrapper(f, tag, thumbnailUrl);
             //async task
