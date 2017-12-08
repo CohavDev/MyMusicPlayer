@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.cohav.mymusicplayer.Custom_Classes.CircleTransform;
 import com.cohav.mymusicplayer.Custom_Classes.VideoItem;
+import com.cohav.mymusicplayer.MainActivity;
 import com.cohav.mymusicplayer.R;
 import com.squareup.picasso.Picasso;
 
@@ -82,6 +83,9 @@ public class CallDwnBottomSheet extends BottomSheetDialogFragment {
                 dialog.dismiss();
                 //call to DwnFragment
                 DwnFragment fragment = (DwnFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.dwnRelative);
+                if(fragment == null){
+                    fragment = (DwnFragment)getActivity().getSupportFragmentManager().findFragmentByTag("dwnRelative");
+                }
                 fragment.handleDwn(item,mHolder,vidUrl);
             }
         });

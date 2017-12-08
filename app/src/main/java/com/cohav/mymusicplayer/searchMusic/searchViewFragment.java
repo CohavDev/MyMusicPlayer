@@ -92,66 +92,7 @@ public class searchViewFragment extends Fragment {
         //data
         //setTouchHelper();
     }
-    /**public void setTouchHelper(){
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT){
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target){
-                return false;
-            }
-            @Override
-            public void onSwiped( RecyclerView.ViewHolder viewHolder, int direction){
-                if(direction == ItemTouchHelper.LEFT ){
-                    myAdapter.changeState((MyAdapter.MyViewHolder)viewHolder);
-                }
-                else{
-                    myAdapter.removeSelected((MyAdapter.MyViewHolder)viewHolder);
-                }
 
-            }
-            @Override
-            public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                if (myAdapter.isItemSelected((MyAdapter.MyViewHolder) viewHolder)) {
-                    return ItemTouchHelper.RIGHT;
-                }
-                return ItemTouchHelper.LEFT;
-            }
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
-
-                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-
-
-                    if (!myAdapter.isItemSelected((MyAdapter.MyViewHolder) viewHolder)) {
-                        View itemView = viewHolder.itemView;
-                        p.setColor(Color.DKGRAY);
-                        RectF background = new RectF((float) itemView.getRight() + dX,
-                                (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
-                        c.drawRect(background, p);
-                        settingsIcon.setBounds(itemView.getRight()-2*settingsIcon.getIntrinsicWidth(),itemView.getTop()+settingsIcon.getIntrinsicHeight(),itemView.getRight()-settingsIcon.getIntrinsicWidth(),itemView.getBottom()-settingsIcon.getIntrinsicHeight());
-                        settingsIcon.draw(c);
-                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
-
-                    } else if (myAdapter.isItemSelected((MyAdapter.MyViewHolder) viewHolder)) {
-                        View itemView = viewHolder.itemView;
-                        p.setColor(Color.DKGRAY);
-                        RectF background = new RectF((float) itemView.getLeft() + dX,
-                                (float) itemView.getTop(), (float) itemView.getLeft(), (float) itemView.getBottom());
-                        c.drawRect(background, p);
-                        closeIcon.setBounds(itemView.getLeft()+closeIcon.getIntrinsicWidth(),itemView.getTop()+closeIcon.getIntrinsicHeight(),itemView.getLeft()+2*closeIcon.getIntrinsicWidth(),itemView.getBottom()-closeIcon.getIntrinsicHeight());
-                        closeIcon.draw(c);
-                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                    }
-                    //clean?
-                }
-
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(mRecycler);
-
-    }
-     */
     //youtube search methods
     public void searchOnYoutube(final String keywords){
         AsyncTask asyncTask = new AsyncTask<Integer, Integer,Integer>() {

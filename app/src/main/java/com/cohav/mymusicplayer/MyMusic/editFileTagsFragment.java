@@ -1,26 +1,11 @@
 package com.cohav.mymusicplayer.MyMusic;
 
-import android.app.Fragment;
-import android.content.Context;
-import android.content.CursorLoader;
+
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BlurMaskFilter;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,15 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cohav.mymusicplayer.Custom_Classes.MusicFolder;
-import com.cohav.mymusicplayer.MainActivity;
 import com.cohav.mymusicplayer.R;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.id3.ID3v24Tag;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
 
@@ -54,7 +35,7 @@ import java.util.Arrays;
  * Created by Shaul on 22/11/2017.
  */
 
-public class editFileTagsFragment extends AppCompatActivity {
+public class editFileTagsFragment extends Fragment {
     private MusicFolder myFolder;
     private TextInputEditText songNameEdit,authorNameEdit;
     private ImageView artImage;
@@ -68,33 +49,36 @@ public class editFileTagsFragment extends AppCompatActivity {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_tags);
+        return inflater.inflate(R.layout.edit_tags, parent, false);
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
         //start code
-        this.myFolder = (MusicFolder) getIntent().getSerializableExtra("myFolder");
+        this.myFolder = (MusicFolder) getArguments().get("myFolder");
         System.out.println("My Folder     "+myFolder);
         if(myFolder == null){
-            Toast.makeText(this,"File was not found",Toast.LENGTH_LONG).show();
-            finish();
+            Toast.makeText(getActivity(),"File was not found",Toast.LENGTH_LONG).show();
+            getActivity().finish();
 
         }
-        songNameEdit = (TextInputEditText) findViewById(R.id.editText_Title);
-        authorNameEdit = (TextInputEditText) findViewById(R.id.editText_Author);
-        title = (TextView)findViewById(R.id.editTagTitlePage);
-        artImage = (ImageView) findViewById(R.id.art_tag);
-        selectArt = (ImageButton)findViewById(R.id.selectArt);
-        cancelBtn = (Button)findViewById(R.id.cancel_Tags);
-        saveBtn = (Button)findViewById(R.id.save_tags);
+        songNameEdit = (TextInputEditText) view.findViewById(R.id.editText_Title);
+        authorNameEdit = (TextInputEditText) view.findViewById(R.id.editText_Author);
+        title = (TextView)view.findViewById(R.id.editTagTitlePage);
+        artImage = (ImageView) view.findViewById(R.id.art_tag);
+        selectArt = (ImageButton)view.findViewById(R.id.selectArt);
+        cancelBtn = (Button)view.findViewById(R.id.cancel_Tags);
+        saveBtn = (Button)view.findViewById(R.id.save_tags);
         title.setText(myFolder.getFile().getName());
         songNameEdit.setText(myFolder.getSongName());
         authorNameEdit.setText(myFolder.getAuthorName());
         if(myFolder.getThumbnail()!=null){
-            Picasso.with(this).load(myFolder.getThumbnail()).fit().into(artImage);
+            Picasso.with(getActivity()).load(myFolder.getThumbnail()).fit().into(artImage);
             chosenArt = myFolder.getThumbnail();
         }
         else{
-            Picasso.with(this).load(R.drawable.music_icon).fit().into(artImage);
+            Picasso.with(getActivity()).load(R.drawable.music_icon).fit().into(artImage);
             chosenArt = null;
         }
 
@@ -113,16 +97,16 @@ public class editFileTagsFragment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //close activity
-                finish();
+                getActivity().finish();
             }
         });
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setID3Tag(songNameEdit.getText().toString(),authorNameEdit.getText().toString(),chosenArt);
-                Toast.makeText(editFileTagsFragment.this,"Data was saved successfully",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Data was saved successfully",Toast.LENGTH_LONG).show();
                 //close activity
-                finish();
+                getActivity().finish();
             }
         });
 
@@ -133,7 +117,7 @@ public class editFileTagsFragment extends AppCompatActivity {
         if(requestCode == 2){
             if(data!=null) {
                 Uri selectedImg = data.getData();
-                Picasso.with(editFileTagsFragment.this).load(selectedImg).fit().into(artImage);
+                Picasso.with(getActivity()).load(selectedImg).fit().into(artImage);
                 //need to check if null
                 getPath(selectedImg);
             }
@@ -159,13 +143,13 @@ public class editFileTagsFragment extends AppCompatActivity {
         //tell gallery
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(Uri.fromFile(myFolder.getFile()));
-        sendBroadcast(intent);
+        getActivity().sendBroadcast(intent);
         //need to scan gallery
     }
     public void getPath(Uri uri) {
         if(this.chosenArt == null){
             //creates file
-            File cachFolder = new File(getCacheDir(),File.separator+"cachThumbnails");
+            File cachFolder = new File(getActivity().getCacheDir(),File.separator+"cachThumbnails");
             if(!cachFolder.exists()){
                 cachFolder.mkdirs();
             }
@@ -183,7 +167,7 @@ public class editFileTagsFragment extends AppCompatActivity {
         byte[] imageData = new byte[chunkSize];
 
         try {
-            InputStream in = getContentResolver().openInputStream(uri);
+            InputStream in = getActivity().getContentResolver().openInputStream(uri);
             OutputStream out = new FileOutputStream(this.chosenArt);
             int bytesRead;
             while ((bytesRead = in.read(imageData)) > 0) {

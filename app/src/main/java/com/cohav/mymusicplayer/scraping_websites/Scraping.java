@@ -128,6 +128,9 @@ public class Scraping {
         switch (fragmentName){
             case "DwnFragment":
                 DwnFragment fragmentDwn = (DwnFragment) manager.findFragmentById(R.id.dwnRelative);
+                if(fragmentDwn == null){
+                    fragmentDwn = (DwnFragment)manager.findFragmentByTag("dwnRelative");
+                }
                 fragmentDwn.startDwn(finalDwnURL);
                 break;
             case "MusicPlayer":

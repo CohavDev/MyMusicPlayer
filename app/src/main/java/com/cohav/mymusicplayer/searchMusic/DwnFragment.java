@@ -201,7 +201,9 @@ public class DwnFragment extends Fragment {
             }
             System.out.println("starting download");
             MusicPlayerView fragment = (MusicPlayerView) getActivity().getSupportFragmentManager().findFragmentById(R.id.musicPlayerView);
-            fragment.destroyMediaPlayer();
+            if(fragment!=null) {
+                fragment.destroyMediaPlayer();
+            }
             handler = new Handler();
             runnable = new Runnable() {
                 @Override

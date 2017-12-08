@@ -29,6 +29,7 @@ import com.cohav.mymusicplayer.Custom_Classes.MusicFolder;
 import com.cohav.mymusicplayer.MainActivity;
 import com.cohav.mymusicplayer.R;
 import com.cohav.mymusicplayer.searchMusic.MusicPlayerView;
+import com.cohav.mymusicplayer.secondActivity;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -161,7 +162,7 @@ public class myMusicAdapter extends RecyclerView.Adapter<myMusicAdapter.MyMusicH
                             case R.id.edit_tags:
                                 //edit id3 tags
                                 //start fragment
-                                Intent intent = new Intent(activity.getContext(),editFileTagsFragment.class);
+                                Intent intent = new Intent(activity.getContext(),secondActivity.class);
                                 intent.putExtra("myFolder",myList.get(pos));
                                 //start activity
                                 activity.getActivity().startActivity(intent);
