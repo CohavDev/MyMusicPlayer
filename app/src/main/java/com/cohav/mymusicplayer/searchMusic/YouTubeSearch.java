@@ -31,6 +31,7 @@ public class YouTubeSearch {
 
     public YouTubeSearch(Context context) {
         pop = "PLDcnymzs18LWrKzHmzrGH1JzLBqrHi3xQ";
+        rock = "PL3oW2tjiIxvQWubWyTI8PF80gV6Kpk6Rr";
         youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {
             @Override
             public void initialize(HttpRequest httpRequest) throws IOException {}
@@ -78,6 +79,12 @@ public class YouTubeSearch {
         return createListFromSearch();
     }
 
+    //setAuthorName
+    private String setAuthorName(String title){
+        String authorName = "";
+        //toTo here.
+        return authorName;
+    }
 
     //playlist
     private List<VideoItem> createListFromPlaylist(PlaylistItemListResponse response){
@@ -92,17 +99,29 @@ public class YouTubeSearch {
             item.setThumbnailURL(result.getSnippet().getThumbnails().getDefault().getUrl());
             item.setHighThumbnail(result.getSnippet().getThumbnails().getHigh().getUrl());
             item.setId(result.getContentDetails().getVideoId());
+            item.setInfo(result.getSnippet().getChannelTitle());
             items.add(item);
         }   //next page token??
             return items;
 
     }
-    public List<VideoItem> searchPlayList(String playList_Id){
+    public List<VideoItem> searchPlayList(String playList_Name){
+        String playList_Id;
+        switch (playList_Name){
+            case "pop":
+                playList_Id = pop;
+                break;
+            case "rock":
+                playList_Id = rock;
+                break;
+            default:
+                return null;
+        }
         YouTube.PlaylistItems.List query;
         try {
             query = youtube.playlistItems().list("snippet");
             query.setKey(KEY);
-            query.setFields(("items(contentDetails/videoId,snippet/title,snippet/thumbnails/default/url,snippet/thumbnails/high)"));
+            query.setFields(("items(contentDetails/videoId,snippet/title,snippet/thumbnails/default/url,snippet/thumbnails/high,snippet/channelTitle)"));
             query.setMaxResults((long)15);
             query.setPlaylistId(playList_Id);
             query.setPart("snippet,contentDetails");

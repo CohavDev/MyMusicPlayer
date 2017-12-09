@@ -93,7 +93,7 @@ public class DwnFragment extends Fragment {
             }
             tag = f.getTagAndConvertOrCreateAndSetDefault();
             tag.setField(FieldKey.TITLE, title);
-            tag.setField(FieldKey.ARTIST, author);//need to apply in another place
+            tag.setField(FieldKey.ARTIST, author);
             tag.setField(FieldKey.ALBUM, title);
             Wrapper w = new Wrapper(f, tag, thumbnailUrl);
             //async task
@@ -163,7 +163,7 @@ public class DwnFragment extends Fragment {
                 intent.setData(Uri.fromFile(wrapper.audioFile.getFile()));
                 wrapper.activity.sendBroadcast(intent);
                 //refresh
-                MainActivity activity = (MainActivity) wrapper.activity;
+                MainActivity activity = (MainActivity) wrapper.activity; //need to be changed and refresh music on its fragment, not here.
                 MyMusicActivity fragment = activity.getMyMusicFrag();
                 fragment.updateDwn();
             }
@@ -345,6 +345,7 @@ public class DwnFragment extends Fragment {
         }
         public void updateMyMusic(){
             //setting metadata
+            System.out.println(item.getInfo()+" "+item.getHighThumbnail());
             setMetaData(file,item.getTitle(),item.getInfo(),item.getHighThumbnail());
 
         }

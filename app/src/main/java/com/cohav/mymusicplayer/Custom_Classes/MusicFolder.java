@@ -91,20 +91,19 @@ public class MusicFolder implements Serializable {
         MusicFolder.context = context;
     }
     private void setThumbnail(){
-        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-        metadataRetriever.setDataSource(file.getAbsolutePath());
-        byte[] data = metadataRetriever.getEmbeddedPicture();
-
         //creating files
         File cachFolder = new File(context.getCacheDir(),File.separator+"cachThumbnails");
         if(!cachFolder.exists()){
             cachFolder.mkdirs();
         }
         File tempFile = new File(cachFolder.getAbsolutePath(),file.getName());
-        try {
-            FileOutputStream fos;
-            BufferedOutputStream bfs;
-            if (!tempFile.exists()) {
+        if(!tempFile.exists()){
+            MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+            metadataRetriever.setDataSource(file.getAbsolutePath());
+            byte[] data = metadataRetriever.getEmbeddedPicture();
+            try {
+                FileOutputStream fos;
+                BufferedOutputStream bfs;
                 if(data!=null && data.length!=0) {
                     tempFile.createNewFile();
                     fos = new FileOutputStream(tempFile);
@@ -118,24 +117,15 @@ public class MusicFolder implements Serializable {
                 else{
                     this.thumbnail = null;
                 }
-
+                System.out.println("--------------------------\n-----------"+this.thumbnail);
             }
-            else{
-                if(data!=null){
-
-                    this.thumbnail = tempFile;
-                }
-
-                else
-                    this.thumbnail = null;
+            catch (Exception e){
+                e.printStackTrace();
             }
-
-            System.out.println("--------------------------\n-----------"+this.thumbnail);
         }
-        catch (Exception e){
-            e.printStackTrace();
+        else{
+            this.thumbnail = tempFile;
         }
-
     }
     public void setThumbnailFile(File file){
         this.thumbnail = file;

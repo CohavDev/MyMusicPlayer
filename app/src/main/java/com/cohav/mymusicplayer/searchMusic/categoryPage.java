@@ -1,14 +1,20 @@
 package com.cohav.mymusicplayer.searchMusic;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +22,17 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cohav.mymusicplayer.Custom_Classes.VideoItem;
 import com.cohav.mymusicplayer.R;
+import com.cohav.mymusicplayer.secondActivity;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Shaul on 07/12/2017.
@@ -32,6 +43,8 @@ public class categoryPage extends Fragment {
     private View view;
     private ArrayList<VideoItem> myList;
     private RecyclerView mRecycler;
+    private ProgressBar progressBar;
+    private TextView genereTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -42,11 +55,16 @@ public class categoryPage extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         this.view=view;
-        mRecycler = (RecyclerView)view.findViewById(R.id.mList);
+        this.progressBar = (ProgressBar)view.findViewById(R.id.progressBar_categoryPage);
+        this.mRecycler = (RecyclerView)view.findViewById(R.id.mList);
+        this.genereTitle = (TextView)view.findViewById(R.id.genere_title);
+        //set text
         this.categoryName = getArguments().getString("categoryName");
-        this.myList = getArguments().getParcelableArrayList("videoList");
+        String text = (this.categoryName).toUpperCase() + " MUSIC";
+        genereTitle.setText(text);
         initCollapsingToolbar();
-        setAdapter();
+        SearchPlayList async = new SearchPlayList(getActivity(),this);
+        async.execute();
     }
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar =
@@ -93,6 +111,51 @@ public class categoryPage extends Fragment {
     }
 
 
+    //async task class
+    private static class SearchPlayList extends AsyncTask<Integer,Integer,List<VideoItem>> {
+        private WeakReference<secondActivity> activityWeakReference;
+        private WeakReference<categoryPage> fragmentWeakReference;
+        private SearchPlayList(Activity activity,Fragment fragment){
+            this.activityWeakReference = new WeakReference<>((secondActivity) activity);
+            this.fragmentWeakReference = new WeakReference<>((categoryPage)fragment);
+        }
+        @Override
+        protected void onPreExecute(){
+            Activity activity = activityWeakReference.get();
+            categoryPage fragment = fragmentWeakReference.get();
+            if(activity==null||fragment==null){
+                return;
+            }
+            fragment.progressBar.setVisibility(View.VISIBLE);
+            ConnectivityManager connectivityManager = (ConnectivityManager) (activity.getSystemService(Context.CONNECTIVITY_SERVICE));
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if(networkInfo == null || ! networkInfo.isConnected()){
+                Toast.makeText(activity,"No Connection",Toast.LENGTH_LONG).show();
+                cancel(true);
+            }
+        }
+        @Override
+        protected List<VideoItem> doInBackground(Integer... params) {
+            Activity activity = activityWeakReference.get();
+            YouTubeSearch youTubeSearch = new YouTubeSearch(activity);
+            List<VideoItem> items = youTubeSearch.searchPlayList(fragmentWeakReference.get().categoryName);
+            // proccess the list
+            return items;
+        }
+        @Override
+        protected void onPostExecute(List<VideoItem> result){
+            System.out.println("asyncTask searching playlsit completed.");
+            fragmentWeakReference.get().progressBar.setVisibility(View.GONE);
+            if(result != null){
+                categoryPage fragment = fragmentWeakReference.get();
+                fragment.myList = (ArrayList<VideoItem>) result;
+                fragment.setAdapter();
+            }
+
+        }
+
+
+    }
     //item decoration
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 

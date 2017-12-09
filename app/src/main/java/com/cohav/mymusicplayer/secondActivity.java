@@ -47,7 +47,7 @@ public class secondActivity extends AppCompatActivity {
            else if(intent.hasExtra("categoryName")){
                //start fragment of category page and send category name details.
                bundle.putString("categoryName",intent.getStringExtra("categoryName"));
-               bundle.putParcelableArrayList("videoList",intent.getParcelableArrayListExtra("videoList"));
+               //bundle.putParcelableArrayList("videoList",intent.getParcelableArrayListExtra("videoList"));
                categoryPage categoryPageFrag = new categoryPage();
                categoryPageFrag.setArguments(bundle);
                getSupportFragmentManager().beginTransaction().add(R.id.secondActivityLayout,categoryPageFrag).addToBackStack(categoryPage.class.getName()).commit();
