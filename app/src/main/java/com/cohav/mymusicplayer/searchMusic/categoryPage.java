@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +47,7 @@ public class categoryPage extends Fragment {
     private RecyclerView mRecycler;
     private ProgressBar progressBar;
     private TextView genereTitle;
+    private ImageView imageView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -54,12 +57,14 @@ public class categoryPage extends Fragment {
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        this.view=view;
+        this.view = view;
         this.progressBar = (ProgressBar)view.findViewById(R.id.progressBar_categoryPage);
         this.mRecycler = (RecyclerView)view.findViewById(R.id.mList);
         this.genereTitle = (TextView)view.findViewById(R.id.genere_title);
+        this.imageView = (ImageView)view.findViewById(R.id.category_list_imageview);
         //set text
         this.categoryName = getArguments().getString("categoryName");
+        setImage();
         String text = (this.categoryName).toUpperCase() + " MUSIC";
         genereTitle.setText(text);
         initCollapsingToolbar();
@@ -109,7 +114,16 @@ public class categoryPage extends Fragment {
         fragmentTransaction.add(fragment2,"dwnRelative");
         fragmentTransaction.commit();
     }
-
+    private void setImage(){
+        switch (categoryName){
+            case "pop":
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.pop_preview));
+                break;
+            case "rock":
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.rock_preview));
+                break;
+        }
+    }
 
     //async task class
     private static class SearchPlayList extends AsyncTask<Integer,Integer,List<VideoItem>> {

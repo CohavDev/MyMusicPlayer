@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.cohav.mymusicplayer.R;
 import com.cohav.mymusicplayer.secondActivity;
@@ -27,7 +28,7 @@ public class searchPlayListFrag extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         intent = new Intent(getActivity(),secondActivity.class);
-        Button btn = (Button)view.findViewById(R.id.pop_btn);
+        ImageButton btn = (ImageButton)view.findViewById(R.id.pop_btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +37,7 @@ public class searchPlayListFrag extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
-        Button rockBtn = (Button)view.findViewById(R.id.rock_btn);
+        ImageButton rockBtn = (ImageButton)view.findViewById(R.id.rock_btn);
         rockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
